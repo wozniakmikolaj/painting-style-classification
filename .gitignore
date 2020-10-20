@@ -130,3 +130,7 @@ dmypy.json
 
 #PyCharm folders
 .idea/
+
+#Project specific directories and files
+/data/raw/
+/data/processed/
