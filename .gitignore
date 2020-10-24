@@ -134,3 +134,4 @@ dmypy.json
 #Project specific directories and files
 /data/raw/
 /data/processed/
+/data/interim/
