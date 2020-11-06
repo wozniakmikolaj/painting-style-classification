@@ -1,12 +1,12 @@
 """ main.py """
 
 from src.configs.config import CFG
-from src.model.style_model import CNNSkipConnection
+from src.models.skip_con_model import CNNSkipConnectionModel
 
 
 def run():
-    """Builds model, loads data, trains and evaluates"""
-    model = CNNSkipConnection(CFG)
+    """Builds models, loads data, trains and evaluates"""
+    model = CNNSkipConnectionModel(CFG)
     model.load_data()
     model.build()
     model.train()

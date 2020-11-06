@@ -1,26 +1,27 @@
+"""Model config in json format"""
+
 import os
 
 
 CFG = {
    "data": {
-       "path_raw": "oxford_iiit_pet:3.*.*",
-       "path_processed":"",
-       "path_s3":"",
-       "image_size": 128,
+       "path_raw": os.path.join(os.path.dirname(os.getcwd()), 'data', 'raw'),
+       "path_processed": os.path.join(os.path.dirname(os.getcwd()), 'data', 'processed'),
+       "path_s3": "",
+       "image_size": 200,
        "load_with_info": True
    },
    "train": {
-       "batch_size": 64,
+       "batch_size": 50,
        "buffer_size": 1000,
-       "epochs": 20,
-       "val_subsplits": 5,
+       "epochs": 30,
        "optimizer": {
            "type": "adam"
        },
        "metrics": ["accuracy"]
    },
-   "model": {
-       "input": [128, 128, 3],
+   "models": {
+       "input": [200, 200, 1],
        "up_stack": {
            "layer_1": 512,
            "layer_2": 256,
@@ -28,7 +29,7 @@ CFG = {
            "layer_4": 64,
            "kernels": 3
        },
-       "output": 3
+       "output": 11
    }
 }
 

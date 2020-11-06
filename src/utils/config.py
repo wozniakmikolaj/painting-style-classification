@@ -4,7 +4,7 @@ import json
 
 
 class Config:
-    """Config class which contains data, train and model hyperparameters"""
+    """Config class which contains data, train and models hyperparameters"""
 
     def __init__(self, data, train, model):
         self.data = data
