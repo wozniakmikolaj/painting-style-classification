@@ -4,6 +4,7 @@
 # internal
 
 # external
+import tensorflow as tf
 
 
 class DataLoader:
@@ -12,8 +13,5 @@ class DataLoader:
     @staticmethod
     def load_data(data_config):
         """Loads dataset from path"""
-        pass
-
-
-# just return split data for train, test and validation
-
+        return tf.data.Dataset.from_tensor_slices((data_config.path_processed_data,
+                                                   data_config.path_processed_labels))

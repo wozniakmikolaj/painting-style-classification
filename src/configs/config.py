@@ -19,8 +19,12 @@ CFG = {
         "path_s3": ""
     },
     "data": {
+        "images_per_class": 1100,
         "image_size": 200,
         "num_channels": 1,
+        "train_split": 0.7,
+        "test_split": 0.15,
+        "validation_split": 0.15
     },
     "train": {
         "learning_rate": 1e-4,
@@ -35,6 +39,6 @@ CFG = {
     "model": {
         "model_name": "cnn_skip_connection_model",
         "input": [200, 200, 1],
-        "output": 11
+        "output": 10
     }
 }
