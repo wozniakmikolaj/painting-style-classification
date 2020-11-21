@@ -13,7 +13,7 @@ import cv2
 config = Config.from_json(CFG)
 
 
-def _get_names_and_styles(styles, num_images_per_class=20):
+def _get_names_and_styles(styles, num_images_per_class=config.data.images_per_class):
     painting_data = pd.read_csv(config.paths.path_raw_csv_file)
     images_array = []
     labels_array = []
@@ -28,7 +28,8 @@ def _get_names_and_styles(styles, num_images_per_class=20):
     return images_array, labels_array
 
 
-def _prepare_img_data(array_of_imgs, array_of_labels, img_width=200, img_height=200):
+def _prepare_img_data(array_of_imgs, array_of_labels, img_width=config.data.image_size,
+                      img_height=config.data.image_size):
     X = []
     y = []
 
