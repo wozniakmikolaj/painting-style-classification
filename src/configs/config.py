@@ -18,18 +18,19 @@ CFG = {
         "path_s3": ""
     },
     "data": {
-        "images_per_class": 1100,
-        "image_size": 200,
+        "dataset_name": "painting_style_dataset",
+        "images_per_class": 2000,
+        "image_size": 64,
         "num_channels": 1,
         "train_split": 0.7,
         "test_split": 0.15,
         "validation_split": 0.15
     },
     "train": {
-        "learning_rate": 1e-4,
+        "learning_rate": 1e-3,
         "batch_size": 64,
         "buffer_size": 1000,
-        "epochs": 40,
+        "epochs": 10,
         "optimizer": {
             "type": "adam"
         },
@@ -37,7 +38,7 @@ CFG = {
     },
     "model": {
         "model_name": "cnn_skip_connection_model",
-        "input": [200, 200, 1],
-        "output": 10
+        "input": [64, 64, 1],
+        "output": 8
     }
 }
