@@ -5,7 +5,7 @@ from src.models.skip_con_model import CNNSkipConnectionModel
 
 
 def run():
-    """Builds models, loads data, trains and evaluates"""
+    """Builds model, loads data, trains and evaluates"""
     model = CNNSkipConnectionModel(CFG)
     model.load_data()
     model.build()
