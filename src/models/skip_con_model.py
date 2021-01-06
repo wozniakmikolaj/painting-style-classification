@@ -1,6 +1,5 @@
 """CNN based model with skip connections"""
 # standard library
-import os
 
 # internal
 from src.executors.skip_con_trainer import CNNSkipConnectionTrainer

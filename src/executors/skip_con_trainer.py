@@ -1,5 +1,6 @@
 # standard library
 import os
+from datetime import datetime
 
 # internal
 from src.utils.logger import get_logger
@@ -30,7 +31,8 @@ class CNNSkipConnectionTrainer:
         self.train_log_dir = os.path.join(os.path.dirname(os.getcwd()), 'models', 'logs', 'gradient_tape')
         self.train_summary_writer = tf.summary.create_file_writer(self.train_log_dir)
 
-        self.model_save_path = os.path.join(os.path.dirname(os.getcwd()), 'models')
+        self.model_save_path = os.path.join(os.path.dirname(os.getcwd()), 'models',
+                                            f"skip_con_{datetime.today().strftime('%Y-%m-%d-%H:%M:%S')}")
 
     @tf.function
     def train_step(self, batch):
