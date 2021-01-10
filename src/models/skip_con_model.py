@@ -35,7 +35,7 @@ class CNNSkipConnectionModel(BaseModel):
         self.train_dataset, self.validation_dataset = DataLoader().etl_load_dataset(self.config)
 
     def build(self):
-        """Builds the Keras Functional API based model"""
+        """Builds the tf.keras based model"""
         inputs = tf.keras.Input(shape=self.config.model.input)
 
         x = tf.keras.layers.Conv2D(16, kernel_size=5, activation=tf.nn.relu)(inputs)

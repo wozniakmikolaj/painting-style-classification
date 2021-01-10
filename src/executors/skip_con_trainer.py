@@ -92,7 +92,7 @@ class CNNSkipConnectionTrainer:
             tf.summary.scalar('accuracy', self.train_acc_metric.result(), step=epoch)
             # tensorboard --logdir logs/gradient_tape
 
-    def print_out_paths(self):
-        print(f'Saved checkpoint path: {self.checkpoint_manager.save()}')
-        print(f'Saved model path: {self.model_save_path}')
-        print(f'Log path: {self.train_log_dir}')
+    # def print_out_paths(self):
+    #     print(f'Saved checkpoint path: {self.checkpoint_manager.save()}')
+    #     print(f'Saved model path: {self.model_save_path}')
+    #     print(f'Log path: {self.train_log_dir}')
