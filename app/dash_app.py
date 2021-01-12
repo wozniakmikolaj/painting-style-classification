@@ -8,6 +8,7 @@ from src.executors.skip_con_predictor import CNNSkipConnectionPredictor
 
 # external
 import numpy as np
+import pandas as pd
 from PIL import Image
 import dash
 from dash.dependencies import Input, Output, State
@@ -16,7 +17,8 @@ import dash_html_components as html
 import plotly_express as px
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-img_pattern = r'base64,(.*)'
+LABELS_LIST = ['ART NOUVEAU (MODERN)', 'BAROQUE', 'CUBISM', 'EXPRESSIONISM', 'IMPRESSIONISM',
+               'REALISM', 'ROMANTICISM', 'SURREALISM', 'SYMBOLISM', 'UKIYO-E']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
@@ -140,17 +142,51 @@ def classify(image_array):
     return predicted_class
 
 
-@app.callback(Output('predicted_class', 'children'),
+# convert to return a sorted pandas dataframe instead
+def convert_prob_labels(list_of_probabilities, list_of_labels):
+    probabilities_dict = dict(zip(list_of_labels, list_of_probabilities))
+    sorted_probabilities_dict = dict(sorted(probabilities_dict.items(), key=lambda item: item[1], reverse=True))
+    class_list = list(sorted_probabilities_dict.keys())[:5]
+    probabilities_list = list(sorted_probabilities_dict.values())[:5]
+    return probabilities_list, class_list
+
+
+def draw_probability_plot(raw_probabilities, class_list=LABELS_LIST):
+    probabilities, labels = convert_prob_labels(raw_probabilities, class_list)
+    figure = px.bar(x=labels, y=probabilities, labels={'x': 'labels', 'y': 'probabilities'})
+    return figure
+
+
+# works again babyyyyy
+@app.callback([Output('predicted_class', 'children'),
+               Output('probabilities-graph', 'figure')],
               Input('intermediate-value', 'children'))
 def perform_classification(img_data):
     if img_data is not None:
         decoded_image = _decode(img_data)
-        predicted_class = classify(decoded_image)
+        class_probabilities = classify(decoded_image)
+        predicted_class = np.argmax(class_probabilities)
         success_string = f"The predicted class is: {predicted_class}"
         children = [
              html.H5(success_string)
         ]
-        return children
+        figure = draw_probability_plot(class_probabilities)
+        return children, figure
+
+
+# this one works fine
+# @app.callback(Output('predicted_class', 'children'),
+#               Input('intermediate-value', 'children'))
+# def perform_classification(img_data):
+#     if img_data is not None:
+#         decoded_image = _decode(img_data)
+#         class_probabilities = classify(decoded_image)
+#         predicted_class = np.argmax(class_probabilities)
+#         success_string = f"The predicted class is: {predicted_class}"
+#         children = [
+#              html.H5(success_string)
+#         ]
+#         return children
 
 # @app.callback([Output('predicted_class', 'children'),
 #               Output('probabilities-graph', 'figure')],
