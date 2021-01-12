@@ -2,7 +2,6 @@
 import os
 
 # internal
-# from src.utils.plot_image import display
 from src.utils.config import Config
 from src.configs.config import CFG
 from src.utils.logger import get_logger
@@ -36,6 +35,4 @@ class CNNSkipConnectionPredictor:
         prediction = self.predict(tensor_image)
 
         predicted_classes = prediction.get('dense_1').numpy().tolist()
-        # return predicted_classes[0]  # <----- to bedzie lista z prawdopodobienstwem kazdej z klas
-        return np.argmax(predicted_classes[0])  # <----- to bedzie klasa z najwyzszym prawdopodobienstwem (0-9)
-        # print(f"Predicted class: {np.argmax(predicted_classes[0])}")
+        return predicted_classes[0]
