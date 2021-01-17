@@ -9,6 +9,7 @@ from src.utils.logger import get_logger
 # external
 import tensorflow as tf
 import numpy as np
+import boto3
 
 LOG = get_logger('predictor')
 
