@@ -8,7 +8,6 @@ from src.executors.skip_con_predictor import CNNSkipConnectionPredictor
 
 # external
 import numpy as np
-import pandas as pd
 from PIL import Image
 import dash
 from dash.dependencies import Input, Output, State
