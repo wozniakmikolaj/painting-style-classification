@@ -1,6 +1,11 @@
 """ main.py """
+# standard library
+
+# internal
 from src.configs.config import CFG
 from src.models.skip_con_model import CNNSkipConnectionModel
+
+# external
 
 
 def run():
@@ -14,3 +19,5 @@ def run():
 
 if __name__ == '__main__':
     run()
+
+

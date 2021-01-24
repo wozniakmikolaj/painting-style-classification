@@ -1,3 +1,5 @@
+"""Script responsible for loading in the images from raw jpg files, readying them for analysis and preparing its
+labels """
 # standard library
 import os
 
@@ -12,8 +14,22 @@ import cv2
 
 config = Config.from_json(CFG)
 
+new_styles_array = ['Impressionism', 'Realism', 'Romanticism', 'Expressionism',
+                    'Art Nouveau (Modern)', 'Baroque', 'Surrealism', 'Symbolism',
+                    'Cubism', 'Ukiyo-e']
+
 
 def _get_names_and_styles(styles, num_images_per_class=config.data.images_per_class):
+    """Populates the array of images and labels for analysis, from a data description file.
+
+    Args:
+        styles(np.array): A list of art styles to iterate over.
+        num_images_per_class(int): A number of images in each of the classes, from config file.
+
+    Returns:
+        images_array(np.array): A numpy array of images.
+        labels_array(np.array): A numpy array of labels.
+    """
     painting_data = pd.read_csv(config.paths.path_raw_csv_file)
     images_array = []
     labels_array = []
@@ -30,6 +46,18 @@ def _get_names_and_styles(styles, num_images_per_class=config.data.images_per_cl
 
 def _prepare_img_data(array_of_imgs, array_of_labels, img_width=config.data.image_size,
                       img_height=config.data.image_size):
+    """Populates the array of images and labels for analysis, from a data description file.
+
+    Args:
+        array_of_imgs(np.array): A list of art styles to iterate over.
+        array_of_labels(np.array): A list of labels to iterate over.
+        img_width(int): Width of an image, from config file.
+        img_height(int): Height of an image, from config file.
+
+    Returns:
+        X(np.array): A numpy array of all the images, after processing.
+        y(np.array): A numpy array of all the labels, after processing.
+    """
     X = []
     y = []
 
@@ -50,16 +78,26 @@ def _prepare_img_data(array_of_imgs, array_of_labels, img_width=config.data.imag
 def _save_data_and_labels(data, labels,
                           data_path=config.paths.path_processed_data,
                           labels_path=config.paths.path_processed_labels):
+    """Saves the data and its labels as a .npz array.
+
+    Args:
+        data(np.array): an array of images ready for analysis.
+        labels(np.array) an array of labels ready for analysis.
+        data_path: location of the data, from config file.
+        labels_path: location of the labels, from config file.
+
+    """
     np.save(data_path, data)
     np.save(labels_path, labels)
 
 
-def build_dataset():
-    new_styles_array = ['Impressionism', 'Realism', 'Romanticism', 'Expressionism',
-                        'Art Nouveau (Modern)', 'Baroque', 'Surrealism', 'Symbolism',
-                        'Cubism', 'Ukiyo-e']
+def build_dataset(styles_array):
+    """Builds the dataset from raw image files and a csv description file, saves the data in .npy format.
 
-    images_array, labels_array = _get_names_and_styles(new_styles_array)
+    Args:
+        styles_array(np.array): an array of art styles we want to analyze.
+    """
+    images_array, labels_array = _get_names_and_styles(styles_array)
 
     data, labels = _prepare_img_data(images_array, labels_array)
 
@@ -68,3 +106,4 @@ def build_dataset():
 
 if __name__ == '__main__':
     build_dataset()
+

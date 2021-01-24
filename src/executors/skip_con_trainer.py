@@ -1,3 +1,4 @@
+"""Training loop implementation for the CNN skip connection model."""
 # standard library
 import os
 from datetime import datetime
@@ -12,6 +13,7 @@ LOG = get_logger('trainer')
 
 
 class CNNSkipConnectionTrainer:
+    """CNNSkipConnectionsTrainer Class"""
 
     def __init__(self, model, train_data_input, val_data_input, loss_fn,
                  optimizer, train_metric, val_metric, epochs):
@@ -36,6 +38,15 @@ class CNNSkipConnectionTrainer:
 
     @tf.function
     def train_step(self, batch):
+        """Calculates the loss and infers predictions of a single training step.
+
+        Args:
+            batch: A single batch of training data.
+
+        Returns:
+            step_loss: Loss after a training step.
+            predictions: Predictions after a training step.
+        """
         trainable_variables = self.model.trainable_variables
         inputs, labels = batch
         with tf.GradientTape() as tape:
@@ -50,11 +61,21 @@ class CNNSkipConnectionTrainer:
 
     @tf.function
     def validation_step(self, batch):
+        """Calculates the loss and infers predictions of a single validation step.
+
+        Args:
+            batch: A single batch of validation data.
+
+        Returns:
+            step_loss: Loss after a validation step.
+            predictions: Predictions after a validation step.
+        """
         inputs, labels = batch
         validations = self.model(inputs, training=False)
         self.val_acc_metric.update_state(labels, validations)
 
     def train(self):
+        """Performs the training and validation, step by step."""
         for epoch in range(self.epochs):
             LOG.info(f'Start epoch {epoch}')
 
@@ -87,12 +108,13 @@ class CNNSkipConnectionTrainer:
         LOG.info(f"Model {save_path} saved.")
 
     def _write_summary(self, loss, epoch):
+        """Writes loss and epoch summary after every epoch.
+
+        Args:
+            loss(float32): Loss after and epoch.
+            epoch(int): Epoch number
+        """
         with self.train_summary_writer.as_default():
             tf.summary.scalar('loss', loss, step=epoch)
             tf.summary.scalar('accuracy', self.train_acc_metric.result(), step=epoch)
             # tensorboard --logdir logs/gradient_tape
-
-    # def print_out_paths(self):
-    #     print(f'Saved checkpoint path: {self.checkpoint_manager.save()}')
-    #     print(f'Saved model path: {self.model_save_path}')
-    #     print(f'Log path: {self.train_log_dir}')

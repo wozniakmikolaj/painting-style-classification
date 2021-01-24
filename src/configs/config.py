@@ -1,10 +1,6 @@
 """Model config in json format"""
 
 import os
-import pathlib
-
-# print(os.path.join(os.path.dirname(os.path.dirname(os.getcwd())), 'data', 'processed', 'data_to_tf_data.npy'))
-# print(pathlib.Path(__file__).parent.parent)
 
 CFG = {
     "paths": {
@@ -15,7 +11,6 @@ CFG = {
         "path_processed_labels": os.path.join(os.path.dirname(os.getcwd()), 'data', 'processed', 'labels_to_tf_data.npy'),
         "path_model_saved": os.path.join(os.path.dirname(os.getcwd()), 'models'),
         "path_model_plot": os.path.join(os.path.dirname(os.getcwd()), 'figures'),
-        "path_s3": ""
     },
     "data": {
         "dataset_name": "painting_style_dataset",

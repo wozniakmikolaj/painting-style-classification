@@ -4,7 +4,7 @@ pandas==1.2.0
 tensorflow==2.4.0
 scikit-learn==0.24.0
 pillow==8.0.1
-boto3==1.16.54
+opencv==4.5.0
 flask==1.1.2
 dash==1.18.1
 dash-core-components==1.14.1

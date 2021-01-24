@@ -20,6 +20,7 @@ class CNNSkipConnectionModel(BaseModel):
         super().__init__(config)
         self.model = None
         self.model_name = self.config.model.model_name
+        self.config = config
 
         self.dataset = None
         self.dataset_length = None
@@ -38,40 +39,24 @@ class CNNSkipConnectionModel(BaseModel):
         """Builds the tf.keras based model"""
         inputs = tf.keras.Input(shape=self.config.model.input)
 
-        x = tf.keras.layers.Conv2D(16, kernel_size=5, activation=tf.nn.relu)(inputs)
-        x = tf.keras.layers.MaxPool2D(2, strides=2)(x)
+        x = tf.keras.layers.Conv2D(64, 5, activation="relu")(inputs)
+        x = tf.keras.layers.MaxPooling2D(3)(x)
+        x = tf.keras.layers.Conv2D(128, 5, activation="relu")(x)
+        block_1_output = tf.keras.layers.MaxPooling2D(3)(x)
 
-        x = tf.keras.layers.Conv2D(32, kernel_size=5, activation=tf.nn.relu)(x)
-        x = tf.keras.layers.MaxPool2D(2, strides=2)(x)
+        x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(block_1_output)
+        x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(x)
+        block_2_output = tf.keras.layers.concatenate([x, block_1_output])
+
+        x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(block_2_output)
+        x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(x)
+        block_3_output = tf.keras.layers.concatenate([x, block_2_output])
+
+        x = tf.keras.layers.Conv2D(256, 5, activation="relu")(block_3_output)
+        x = tf.keras.layers.GlobalAveragePooling2D()(x)
 
         x = tf.keras.layers.Flatten()(x)
-
-        x = tf.keras.layers.Dense(32)(x)
-        x = tf.keras.layers.Dropout(rate=0.5)(x)
-
-        x = tf.keras.layers.Dense(32)(x)
-        x = tf.keras.layers.Dropout(rate=0.5)(x)
-
         outputs = tf.keras.layers.Dense(self.config.model.output, activation='softmax')(x)
-
-        # x = tf.keras.layers.Conv2D(64, 5, activation="relu")(inputs)
-        # x = tf.keras.layers.MaxPooling2D(3)(x)
-        # x = tf.keras.layers.Conv2D(128, 5, activation="relu")(x)
-        # block_1_output = tf.keras.layers.MaxPooling2D(3)(x)
-        #
-        # x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(block_1_output)
-        # x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(x)
-        # block_2_output = tf.keras.layers.concatenate([x, block_1_output])
-        #
-        # x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(block_2_output)
-        # x = tf.keras.layers.Conv2D(128, 5, activation="relu", padding="same")(x)
-        # block_3_output = tf.keras.layers.concatenate([x, block_2_output])
-        #
-        # x = tf.keras.layers.Conv2D(256, 5, activation="relu")(block_3_output)
-        # x = tf.keras.layers.GlobalAveragePooling2D()(x)
-        #
-        # x = tf.keras.layers.Flatten()(x)
-        # outputs = tf.keras.layers.Dense(self.config.model.output, activation='softmax')(x)
 
         self.model = tf.keras.Model(inputs, outputs, name=self.config.model.model_name)
 
@@ -87,7 +72,6 @@ class CNNSkipConnectionModel(BaseModel):
         trainer = CNNSkipConnectionTrainer(self.model, self.train_dataset, self.validation_dataset,
                                            loss, optimizer, train_metric, val_metric, self.epochs)
         trainer.train()
-        # trainer.print_out_paths()
 
     def evaluate(self):
         pass
