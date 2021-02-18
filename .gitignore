@@ -132,7 +132,7 @@ dmypy.json
 .idea/
 
 #Project specific directories and files
-/data/raw/*
+/data/raw/
 /data/processed/*
 /data/interim/*
 

@@ -1,0 +1,6 @@
+[core]
+    remote = paintings-remote
+['remote "paintings-remote"']
+    url = s3://painting-clsf-dvc
+    access_key_id = provide-your-id
+    secret_access_key = provide-your-key
